@@ -11,12 +11,15 @@ class Product extends Model
     protected $fillable = [
         'seller_id',
         'name',
+        'brand',
+        'model',
         'description',
         'processor',
         'ram',
         'storage',
         'display',
         'graphics',
+        'is_blocked',
         'price'
     ];
 

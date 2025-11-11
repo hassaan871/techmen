@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('seller_id')->constrained('users')->onDelete('cascade');
             $table->string('name');
+            $table->string('brand');
+            $table->string('model');
             $table->text('description');
             $table->string('processor');
             $table->string('ram');
@@ -22,6 +24,7 @@ return new class extends Migration
             $table->string('display');
             $table->string('graphics');
             $table->decimal('price', 10, 2);
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
         });
     }
