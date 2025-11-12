@@ -16,6 +16,11 @@ class EnsureUserIsSeller
      */
     public function handle(Request $request, Closure $next)
     {
+        if (Auth::user()->is_blocked)
+        {
+            abort(403, 'Your account has been blocked by the administrator.');
+        }
+
         if (Auth::user()->role !== 'seller')
         {
             abort(403, 'Unauthorized');
