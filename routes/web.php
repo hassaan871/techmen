@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureUserIsSeller;
@@ -9,26 +11,36 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // Seller Routes 
     Route::middleware([EnsureUserIsSeller::class])->group(function () {
         Route::get('/product/add', function () {
-            return view('add-new-product');
+            return view('products.add');
         });
         Route::get('/product/view', [ProductController::class, 'getProducts']);
         Route::post('/product', [ProductController::class, 'createProduct']);
+        Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+        // Route::get('/product/{id}', [ProductController::class, 'editView']);
+        Route::get('/product/{product}/variant/{variant}', [ProductController::class, 'editView'])->name('products.variants.edit');
+        Route::put('/product/{productId}', [ProductController::class, 'edit']);
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // Cart Routes 
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::get('/cart/add/{productId}/{variantId}', [CartController::class, 'add'])->name('cart.add');
+    Route::get('/cart/remove/{key}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/cart/update/{key}', [CartController::class, 'update'])->name('cart.update');
+
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

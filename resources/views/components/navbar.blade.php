@@ -10,9 +10,9 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Techmen
+            <a class="navbar-brand" href="/home">Techmen
                 @if ( Auth::user()->role == 'seller')
                     Seller
                 @elseif ( Auth::user()->role == 'admin' )
@@ -28,7 +28,7 @@
             <div class="collapse navbar-collapse" id="navCollapse">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="">Home</a>
+                        <a class="nav-link {{ request()->is('home') ? 'active' : '' }}" href="/home">Home</a>
                     </li>
 
                     @if (Auth::user()->role == 'seller')
@@ -38,7 +38,7 @@
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Products
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+                        <ul class="dropdown-menu {{ request()->is('product/view') ? 'active' : '' }}" aria-labelledby="productsDropdown">
                             <li><a class="dropdown-item" href="/product/add">Add new Product</a></li>
                             <li><a class="dropdown-item" href="/product/view">View existing Products</a></li>
                         </ul>
@@ -61,7 +61,7 @@
                         <a class="nav-link" href="#">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Cart</a>
+                        <a class="nav-link {{ request()->is('cart') ? 'active' : '' }}" href="/cart">Cart</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Become a Seller</a>
@@ -86,13 +86,9 @@
                 </ul>
 
                 <div class="d-flex align-items-center">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" />
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-
                     <form method="POST" action="{{ route('logout') }}" class="ms-2">
                         @csrf
+                        <span class="text-success">Hello, {{ Auth::user()->name }}</span>
                         <button type="submit" class="btn btn-outline-danger">Logout</button>
                     </form>
                 </div>

@@ -1,6 +1,6 @@
 <x-navbar />
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <h1 class="mb-4">Add New Product</h1>
 
     <form class="row g-3" method="POST" action="/product">
@@ -63,16 +63,27 @@
             <textarea class="form-control" id="description" name="description" rows="3" placeholder="The MacBook Air M4 features..." required></textarea>
         </div>
 
-        {{-- Price --}}
-        <div class="col-md-6">
+        {{-- Price, Stock, and Category in one row --}}
+        <div class="col-md-4">
             <label for="price" class="form-label">Price</label>
             <input type="number" class="form-control" id="price" name="price" placeholder="999.99" step="0.01" required>
         </div>
 
-        {{-- Submit Button --}}
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">Add Product</button>
+        <div class="col-md-4">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" class="form-control" id="stock" name="stock" placeholder="10" min="0" required>
         </div>
 
+        <div class="col-md-4">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" id="category" name="category" required>
+                <option value="laptop" selected>Laptop</option>
+            </select>
+        </div>
+
+        {{-- Submit Button --}}
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">Add Product</button>
+        </div>
     </form>
 </div>

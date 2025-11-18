@@ -18,12 +18,7 @@ return new class extends Migration
             $table->string('brand');
             $table->string('model');
             $table->text('description');
-            $table->string('processor');
-            $table->string('ram');
-            $table->string('storage');
-            $table->string('display');
-            $table->string('graphics');
-            $table->decimal('price', 10, 2);
+            $table->enum('category', ['laptop'])->default('laptop');
             $table->boolean('is_blocked')->default(false);
             $table->timestamps();
         });
