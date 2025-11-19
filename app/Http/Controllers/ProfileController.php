@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,5 +57,27 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function becomeSeller()
+    {
+        User::where('id', Auth::user()->id)->update([
+            'role' => 'seller'
+        ]);
+
+        Auth::logout();
+
+        return redirect()->route('login')->with('success', 'You are now a seller. Please login again.');
+    }
+
+    public function switchToUser()
+    {
+        User::where('id', Auth::user()->id)->update([
+            'role' => 'user'
+        ]);
+
+        Auth::logout();
+
+        return redirect()->route('login')->with('success', 'You are now a User. Please login again.');
     }
 }

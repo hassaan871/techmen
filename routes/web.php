@@ -34,6 +34,12 @@ Route::middleware('auth')->group(function () {
         // Manage Orders
         Route::get('/orders/manage', [OrderController::class, 'manageOrders']);
         Route::put('/orders/update', [OrderController::class, 'update'])->name('orders.update');
+
+        //Switch to user
+        Route::get('/user/switch', function() {
+            return view('user.switch');
+        });
+        Route::post('/user/switch', [ProfileController::class, 'switchToUser']);
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -56,6 +62,11 @@ Route::middleware('auth')->group(function () {
         return view('contactus.index');
     });
 
+    Route::get('/seller/become', function() {
+        return view('seller.become');
+    });
+
+    Route::post('/seller/become', [ProfileController::class, 'becomeSeller']);
 });
 
 require __DIR__ . '/auth.php';
