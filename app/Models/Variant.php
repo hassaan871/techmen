@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Variant extends Model
 {
-    use SoftDeletes; 
-    
+    use SoftDeletes;
+
     protected $fillable = [
         'product_id',
         'processor',
@@ -20,7 +20,14 @@ class Variant extends Model
         'stock',
     ];
 
-    public function product() {
+    public function product()
+    {
         return $this->belongsTo(Product::class);
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_product')
+            ->withPivot('product_id', 'quantity', 'price_at_purchase');
     }
 }

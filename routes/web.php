@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureUserIsSeller;
@@ -38,9 +39,12 @@ Route::middleware('auth')->group(function () {
     // Cart Routes 
     Route::get('/cart', [CartController::class, 'index']);
     Route::get('/cart/add/{productId}/{variantId}', [CartController::class, 'add'])->name('cart.add');
-    Route::get('/cart/remove/{key}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::get('/cart/update/{key}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{key}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::put('/cart/update/{key}', [CartController::class, 'update'])->name('cart.update');
 
+    // Orders Routes 
+    Route::post('/orders/place', [OrderController::class, 'placeOrder'])->name('orders.place');
+    Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders');
 });
 
 require __DIR__ . '/auth.php';

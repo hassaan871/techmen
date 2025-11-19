@@ -49,18 +49,15 @@
                             <td>{{ $item['variant'] }}</td>
 
                             <td>Rs. {{ number_format($latestPrice) }}</td>
-                            <td>
-                                    <form action="{{ route('cart.update', $key) }}" method="get" class="d-flex align-items-center">
+                                <td>
+                                    <form action="{{ route('cart.update', $key) }}" method="POST" class="d-flex align-items-center">
                                         @csrf
-                                        {{-- @method('PUT') --}}
+                                        @method('PUT')
 
-                                        <!-- Decrease button -->
                                         <button type="submit" name="action" value="decrease" class="btn btn-sm btn-secondary">-</button>
 
-                                        <!-- Quantity display -->
                                         <input type="text" name="qty" value="{{ $item['qty'] }}" class="form-control form-control-sm mx-1 text-center" style="width: 50px;" readonly>
 
-                                        <!-- Increase button -->
                                         <button type="submit" name="action" value="increase" class="btn btn-sm btn-secondary">+</button>
                                     </form>
                                 </td>
@@ -70,8 +67,9 @@
                             </td>
 
                             <td>
-                                <form action="{{ route('cart.remove', $key) }}" method="GET">
+                                <form action="{{ route('cart.remove', $key) }}" method="POST">
                                     @csrf
+                                    @method('DELETE')
                                     <button class="btn btn-sm btn-danger">Remove</button>
                                 </form>
                             </td>
@@ -91,12 +89,23 @@
         </div>
 
         <!-- Checkout Button -->
-        <div class="text-end mt-3">
-            <a href=" " class="btn btn-success btn-lg">
-                Proceed to Checkout
-            </a>
-        </div>
+       <div class="text-end mt-3">
+    <form action="{{ route('orders.place') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-success btn-lg">
+            Place Order
+        </button>
+    </form>
+</div>
+
 
     @endif
 
 </div>
+
+<div>
+    @if (session('error'))
+        <h1 style="color:red;">{{ session('error') }}</h1>
+    @endif
+</div>
+

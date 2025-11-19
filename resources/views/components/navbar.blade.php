@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Navbar Test</title>
+    <title>Techmen</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -46,7 +46,7 @@
 
                     <!-- Sibling nav items -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Orders</a>
+                        <a class="nav-link" href="/orders">Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Switch to User Account</a>
@@ -58,7 +58,7 @@
 
                     @if (Auth::user()->role == 'user')
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Orders</a>
+                        <a class="nav-link" href="/orders">Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('cart') ? 'active' : '' }}" href="/cart">Cart</a>
