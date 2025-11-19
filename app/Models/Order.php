@@ -19,7 +19,7 @@ class Order extends Model
     }
 
     public function products() {
-        return $this->belongsToMany(Product::class)->withPivot('variant_id','quantity', 'price_at_purchase')->withTimestamps();
+        return $this->belongsToMany(Product::class)->withPivot('variant_id','quantity', 'price_at_purchase');
     }
 
     public function variants() {

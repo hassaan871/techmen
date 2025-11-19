@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,12 +13,9 @@ class OrderController extends Controller
 {
     public function getOrders()
     {
-        $orders = Order::with(['products', 'variants'])->get();
-        // $orders = Order::where('user_id', Auth::id())
-        //     ->with(['items.product', 'items.variant'])
-        //     ->latest()
-        //     ->get();
-
+        $orders = Order::with(['products', 'variants'])
+            ->where('user_id', Auth::user()->id)
+            ->get();
         return view('orders.index', compact('orders'));
     }
 
@@ -71,5 +69,55 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function manageOrders()
+    {
+        $sellerId = Auth::id();
+
+        // Get all variant IDs belonging to this seller
+        $sellerVariantIds = Variant::whereHas('product', function ($query) use ($sellerId) {
+            $query->where('seller_id', $sellerId);
+        })->pluck('id')->toArray();
+
+        if (empty($sellerVariantIds)) {
+            return view('manage-orders.index', ['orders' => collect()]);
+        }
+
+        // Get orders that contain these variants
+        $orderIds = DB::table('order_product')
+            ->whereIn('variant_id', $sellerVariantIds)
+            ->pluck('order_id')
+            ->unique();
+
+        if ($orderIds->isEmpty()) {
+            return view('manage-orders.index', ['orders' => collect()]);
+        }
+
+        // Load orders with products and their pivot data
+        $orders = Order::whereIn('id', $orderIds)
+            ->with(['products' => function ($query) {
+                $query->withPivot('variant_id', 'quantity', 'price_at_purchase');
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('manage-orders.index', compact('orders', 'sellerVariantIds'));
+    }
+
+    public function update(Request $request)
+    {
+        // Validate input
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'status' => 'required|in:processing,processed,out for delivery,delivered,canceled'
+        ]);
+
+        // Update order status
+        $order = Order::findOrFail($request->order_id);
+        $order->status = $request->status;
+        $order->save();
+
+        return back()->with('success', 'Order status updated successfully!');
     }
 }

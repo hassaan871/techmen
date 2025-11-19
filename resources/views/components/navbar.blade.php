@@ -46,13 +46,13 @@
 
                     <!-- Sibling nav items -->
                     <li class="nav-item">
-                        <a class="nav-link" href="/orders">Orders</a>
+                        <a class="nav-link {{ request()->is('orders/manage') ? 'active' : '' }}" href="/orders/manage">Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Switch to User Account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact Us</a>
+                        <a class="nav-link" href="/contactus">Contact Us</a>
                     </li>
                     @endif
 
@@ -67,11 +67,14 @@
                         <a class="nav-link" href="#">Become a Seller</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact Us</a>
+                        <a class="nav-link" href="/contactus">Contact Us</a>
                     </li>
                     @endif
 
                     @if (Auth::user()->role == 'admin')
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orders/manage">Orders</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="productsDropdown"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">

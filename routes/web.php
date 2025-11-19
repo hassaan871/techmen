@@ -30,6 +30,10 @@ Route::middleware('auth')->group(function () {
         // Route::get('/product/{id}', [ProductController::class, 'editView']);
         Route::get('/product/{product}/variant/{variant}', [ProductController::class, 'editView'])->name('products.variants.edit');
         Route::put('/product/{productId}', [ProductController::class, 'edit']);
+        
+        // Manage Orders
+        Route::get('/orders/manage', [OrderController::class, 'manageOrders']);
+        Route::put('/orders/update', [OrderController::class, 'update'])->name('orders.update');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -45,6 +49,13 @@ Route::middleware('auth')->group(function () {
     // Orders Routes 
     Route::post('/orders/place', [OrderController::class, 'placeOrder'])->name('orders.place');
     Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders');
+
+    
+    // Contact us
+    Route::get('/contactus', function() {
+        return view('contactus.index');
+    });
+
 });
 
 require __DIR__ . '/auth.php';
