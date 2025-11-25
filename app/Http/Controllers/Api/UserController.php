@@ -70,6 +70,6 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'User deleted successfully'
-         ]);
+        ]);
     }
 }
