@@ -7,6 +7,12 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureUserIsSeller;
 use Illuminate\Support\Facades\Route;
+use App\Jobs\ProcessSomething;
+
+Route::get('/dispatch-job', function () {
+    ProcessSomething::dispatch();
+    return 'Job dispatched check your inbox!';
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -56,7 +62,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders/place', [OrderController::class, 'placeOrder'])->name('orders.place');
     Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders');
 
-    
     // Contact us
     Route::get('/contactus', function() {
         return view('contactus.index');
